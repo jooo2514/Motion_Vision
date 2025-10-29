@@ -69,23 +69,24 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NOMINMAX;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;C:\Users\VivLeoN\source\repos\Motion_Vision\mfc_client\include;inc;C:\opencv\build\include;C:\Program Files\Basler\pylon 5\Development\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;C:\Users\aiot\Desktop\Externals\opencv\build\include;inc;C:\opencv\build\include;C:\Program Files\Basler\pylon 5\Development\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ConformanceMode>true</ConformanceMode>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <!-- vcpkg MSBuild 통합을 쓰면 OpenCV 등은 자동 연결됨.
            아래는 MFC 클라이언트에서 명시 필요한 Win32 라이브러리들 -->
-      <AdditionalDependencies>Gdiplus.lib;Ws2_32.lib;Comctl32.lib;Shlwapi.lib;Dwmapi.lib;UxTheme.lib;GCBase_MD_VC141_v3_1_Basler_pylon.lib;GenApi_MD_VC141_v3_1_Basler_pylon.lib;PylonBase_v5_2.lib;PylonC.lib;PylonGUI_v5_2.lib;PylonUtility_v5_2.lib;opencv_world4120.lib;opencv_world4120d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Gdiplus.lib;Ws2_32.lib;Comctl32.lib;Shlwapi.lib;Dwmapi.lib;UxTheme.lib;GCBase_MD_VC141_v3_1_Basler_pylon.lib;GenApi_MD_VC141_v3_1_Basler_pylon.lib;PylonBase_v5_2.lib;PylonC.lib;PylonGUI_v5_2.lib;PylonUtility_v5_2.lib;opencv_world4120d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <!-- 수동 경로를 강제하고 싶으면 주석 해제
       <AdditionalLibraryDirectories>$(VcpkgRoot)installed\$(VcpkgTriplet)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       -->
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Program Files\Basler\pylon 5\Development\lib\x64;C:\opencv\build\x64\vc16\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Program Files\Basler\pylon 5\Development\lib\x64;C:\Users\aiot\Desktop\Externals\opencv\build\x64\vc16\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>

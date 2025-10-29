@@ -48,3 +48,9 @@
 // ==== Popup Menu ====
 #define IDR_MENU_LIVE_TAB           3200
 
+// 카메라 선택 버튼 명령 ID 시작값.
+// 충돌 안 나게 기존 리소스 ID들과 안 겹치는 값 하나 잡으면 된다.
+// 만약 Resource.h에 이미 ID_VIEW_..., ID_MANUAL_CAPTURE_BTN 등이 32771 이런 식이면
+// 33000 같은 넉넉한 구역을 써주자.
+
+#define ID_CAMERA_BTN_BASE  33000

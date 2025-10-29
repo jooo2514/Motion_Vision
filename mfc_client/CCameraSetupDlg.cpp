@@ -8,6 +8,9 @@
 #include <array>
 #include <pylon/DeviceInfo.h>
 
+// [1] CCameraSetupDlg에 대한 런타임 클래스 구현 (CCameraSetupDlg::GetRuntimeClass 해결)
+IMPLEMENT_DYNAMIC(CCameraSetupDlg, CDialogEx)
+
 // --- 사용자 확인 필요: Resource.h 에 IDC_BUTTON_SEARCH, IDC_LIST1 정의 확인 ---
 
 BEGIN_MESSAGE_MAP(CCameraSetupDlg, CDialogEx)
