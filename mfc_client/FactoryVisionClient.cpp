@@ -8,6 +8,9 @@
 #include "MainFrm.h"
 #include "FactoryVisionClientDoc.h"
 #include "FactoryVisionClientView.h"
+#include <afxdisp.h> // IDP_OLE_INIT_FAILED 사용 위해 포함 (보통 pch.h에 이미 있음)
+#include <gdiplus.h> // GdiplusStartup/Shutdown 사용 위해 포함 (보통 pch.h에 이미 있음)
+#pragma comment(lib, "gdiplus.lib") // GDI+ 라이브러리 링크
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -35,19 +38,32 @@ BOOL CFactoryVisionClientApp::InitInstance()
     InitCommonControlsEx(&icc);
     CWinApp::InitInstance();
 
-    if (!AfxOleInit()) { AfxMessageBox(IDP_OLE_INIT_FAILED); return FALSE; }
+    // OLE 라이브러리를 초기화합니다.
+    if (!AfxOleInit())
+    {
+        // --- 수정된 부분 (IDP_OLE_INIT_FAILED 정의 확인) ---
+        // Resource.h에 IDP_OLE_INIT_FAILED 정의가 있는지 확인 필요.
+        // 일반적으로 MFC 프로젝트 생성 시 자동으로 추가됩니다.
+        AfxMessageBox(IDP_OLE_INIT_FAILED);
+        // --- 수정 끝 ---
+        return FALSE;
+    }
     AfxEnableControlContainer();
     EnableTaskbarInteraction(FALSE);
 
+    // GDI+ 초기화
     Gdiplus::GdiplusStartupInput gsi;
     if (Gdiplus::GdiplusStartup(&m_gdiplusToken, &gsi, NULL) != Gdiplus::Ok)
     {
         AfxMessageBox(_T("GDI+ 초기화 실패")); return FALSE;
     }
 
+    // Winsock 초기화
     if (!InitializeWinsock())
     {
-        AfxMessageBox(_T("Winsock 초기화 실패")); Gdiplus::GdiplusShutdown(m_gdiplusToken); return FALSE;
+        AfxMessageBox(_T("Winsock 초기화 실패"));
+        Gdiplus::GdiplusShutdown(m_gdiplusToken);
+        return FALSE;
     }
 
     SetRegistryKey(_T("MyCompany Vision Systems"));
@@ -58,11 +74,21 @@ BOOL CFactoryVisionClientApp::InitInstance()
         RUNTIME_CLASS(CFactoryVisionClientDoc),
         RUNTIME_CLASS(CMainFrame),
         RUNTIME_CLASS(CFactoryVisionClientView));
-    if (!pDocTemplate) return FALSE;
+    if (!pDocTemplate)
+    {
+        Gdiplus::GdiplusShutdown(m_gdiplusToken);
+        WSACleanup();
+        return FALSE;
+    }
     AddDocTemplate(pDocTemplate);
 
     CCommandLineInfo cmdInfo; ParseCommandLine(cmdInfo);
-    if (!ProcessShellCommand(cmdInfo)) return FALSE;
+    if (!ProcessShellCommand(cmdInfo))
+    {
+        Gdiplus::GdiplusShutdown(m_gdiplusToken);
+        WSACleanup();
+        return FALSE;
+    }
 
     m_pMainWnd->ShowWindow(SW_SHOWMAXIMIZED);
     m_pMainWnd->UpdateWindow();
@@ -82,6 +108,7 @@ BOOL CFactoryVisionClientApp::InitializeWinsock()
     WSADATA wsa; return (WSAStartup(MAKEWORD(2, 2), &wsa) == 0);
 }
 
+// CAboutDlg 대화 상자 정의 (변경 없음)
 class CAboutDlg : public CDialogEx
 {
 public: CAboutDlg() noexcept : CDialogEx(IDD_ABOUTBOX) {}

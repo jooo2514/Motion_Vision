@@ -4,6 +4,7 @@
 #include "FactoryVisionClient.h"
 #endif
 #include "FactoryVisionClientDoc.h"
+#include <afxdisp.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

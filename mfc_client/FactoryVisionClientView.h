@@ -4,6 +4,22 @@
 #include <vector>
 #include <gdiplus.h>
 #pragma comment(lib, "gdiplus.lib")
+#include <afxmt.h> // CCriticalSection, CSingleLock 사용
+#include <gdiplus.h> // GDI+ 헤더 포함
+
+// GDI+ 타입 전방 선언
+namespace Gdiplus
+{
+    class Font;
+    class Graphics;
+    class RectF;
+    class Brush;
+    class StringFormat;
+    class Bitmap;
+}
+
+
+class CFactoryVisionClientDoc;
 
 class CFactoryVisionClientView : public CView
 {
@@ -42,10 +58,10 @@ protected:
 private:
     // GDI+
     ULONG_PTR m_gdiplusToken{};
-    Gdiplus::Font* m_pFontLarge{};
-    Gdiplus::Font* m_pFontMedium{};
-    Gdiplus::Font* m_pFontSmall{};
-    Gdiplus::Font* m_pFontDefect{};
+    Gdiplus::Font* m_pFontLarge = nullptr;
+    Gdiplus::Font* m_pFontMedium = nullptr;
+    Gdiplus::Font* m_pFontSmall = nullptr;
+    Gdiplus::Font* m_pFontDefect = nullptr;
 
     // 상태
     int m_nActiveCameraIndex{ 0 };
@@ -59,12 +75,11 @@ private:
     const size_t MAX_DEFECT_HISTORY = 200;
 
     // 그리기 헬퍼
-    void DrawVideo(Gdiplus::Graphics& g, const Gdiplus::RectF& rectVideo);
-    void DrawDashboard(Gdiplus::Graphics& g, const Gdiplus::RectF& rectDash);
-    void DrawBitmap(Gdiplus::Graphics& g, const cv::Mat& image, const Gdiplus::RectF& rect, bool keepAR = true);
-    void DrawTextWithShadow(Gdiplus::Graphics& g, const CString& text, Gdiplus::Font* font,
-        const Gdiplus::RectF& rect, const Gdiplus::Brush* brush, Gdiplus::StringFormat* fmt);
-
+    void DrawVideo(Gdiplus::Graphics& g, const Gdiplus::RectF& r);
+    void DrawDashboard(Gdiplus::Graphics& g, const Gdiplus::RectF& r);
+    void DrawBitmap(Gdiplus::Graphics& g, const cv::Mat& img, const Gdiplus::RectF& r, bool keepAR = true);
+    void DrawTextWithShadow(Gdiplus::Graphics& g, const CString& t, Gdiplus::Font* f,
+        const Gdiplus::RectF& r, const Gdiplus::Brush* b, Gdiplus::StringFormat* fmt);
     // 파일/CSV
     bool SaveJpegToFile(const cv::Mat& img, CString& outPath);   // JPEG 품질은 config.ini에서 읽음
     bool ExportHistoryToCsv(const CString& filePath);
@@ -72,3 +87,10 @@ private:
     // config 읽기 (JPEG 품질)
     int ReadJpegQualityFromIni() const;
 };
+
+#ifndef _DEBUG  // 디버그 버전이 아닌 경우 CFactoryVisionClientView::GetDocument 구현
+inline CFactoryVisionClientDoc* CFactoryVisionClientView::GetDocument() const
+{
+    return reinterpret_cast<CFactoryVisionClientDoc*>(m_pDocument);
+}
+#endif

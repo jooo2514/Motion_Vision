@@ -1,8 +1,11 @@
 ﻿#pragma once
 
+#include <afxres.h>
+
 #define IDR_MAINFRAME               128
 #define IDS_APP_TITLE               129
 #define IDS_HELLO                   130
+#define IDP_OLE_INIT_FAILED         100 // <<< 추가 (표준 MFC ID)
 
 // Icons
 #define IDI_MAINFRAME               200
@@ -21,6 +24,10 @@
 // Dialogs
 #define IDD_ABOUTBOX                100
 #define IDD_CAMERA_SETUP            101
+
+// CCameraSetupDlg 컨트롤 ID (Pylon 샘플에서 가져옴)
+#define IDC_BUTTON_SEARCH           1001 // <<< 추가
+#define IDC_LIST1                   1002 // <<< 추가
 
 #define ID_EXPORT_CSV               140
 
@@ -41,3 +48,9 @@
 // ==== Popup Menu ====
 #define IDR_MENU_LIVE_TAB           3200
 
+// 카메라 선택 버튼 명령 ID 시작값.
+// 충돌 안 나게 기존 리소스 ID들과 안 겹치는 값 하나 잡으면 된다.
+// 만약 Resource.h에 이미 ID_VIEW_..., ID_MANUAL_CAPTURE_BTN 등이 32771 이런 식이면
+// 33000 같은 넉넉한 구역을 써주자.
+
+#define ID_CAMERA_BTN_BASE  33000
